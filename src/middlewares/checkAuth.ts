@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "../services/tokenService";
+import { verifyAccessToken } from "../services/tokenService.js";
 
 export function checkAuth(req: Request, res: Response, next: NextFunction) {
   try {

@@ -3,19 +3,24 @@ USE cordon_bleu;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) UNIQUE,
-  passwordHash VARCHAR(255)
+  name VARCHAR(255) NOT NULL UNIQUE,
+  passwordHash VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS recipes (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255),
-  ingredients TEXT,
-  servings INT,
-  oven_required BOOLEAN,
-  special_equipment_required BOOLEAN,
-  exotic_ingredients BOOLEAN,
-  country_of_origin VARCHAR(255),
-  price_level INT,
-  author_id INT
+  name VARCHAR(255) NOT NULL,
+  ingredients TEXT NOT NULL,
+  servings INT NOT NULL,
+  oven_required TINYINT(1) NOT NULL DEFAULT 0,
+  special_equipment_required TINYINT(1) NOT NULL DEFAULT 0,
+  exotic_ingredients TINYINT(1) NOT NULL DEFAULT 0,
+  country_of_origin VARCHAR(255) NOT NULL,
+  price_level INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  author_id INT NOT NULL,
+  views_count INT NOT NULL DEFAULT 0,
+  last_viewed_at DATETIME NULL,
+  FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
 );
