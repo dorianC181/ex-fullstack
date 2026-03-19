@@ -1,154 +1,135 @@
 import { Request, Response } from "express";
+import { hash, compare } from "bcrypt";
+import { pool } from "../db";
 import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken
 } from "../services/tokenService";
 
-// Faux stockage en mémoire (remplace la BDD pour l'exo)
-let users: any[] = [];
-
 export async function register(req: Request, res: Response) {
   const { name, password, confirmPassword } = req.body;
-  const file = req.file;
 
   if (!name || !password || !confirmPassword) {
-    res.status(400).json({ message: "Tous les champs sont requis" });
+    res.status(400).json({ message: "Champs requis" });
     return;
   }
 
   if (password !== confirmPassword) {
-    res.status(400).json({ message: "Les mots de passe ne correspondent pas" });
+    res.status(400).json({ message: "Passwords différents" });
     return;
   }
 
-  const existingUser = users.find((u) => u.name === name);
+  const conn = await pool.getConnection();
 
-  if (existingUser) {
-    res.status(409).json({ message: "Utilisateur déjà existant" });
-    return;
-  }
+  try {
+    const users: any[] = await conn.query(
+      "SELECT * FROM users WHERE name = ?",
+      [name]
+    );
 
-  let avatarUrl: string | null = null;
-
-  if (file) {
-    avatarUrl = `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
-  }
-
-  const newUser = {
-    id: users.length + 1,
-    name,
-    password,
-    avatar: avatarUrl
-  };
-
-  users.push(newUser);
-
-  res.status(201).json({
-    message: "Compte créé",
-    user: {
-      id: newUser.id,
-      name: newUser.name,
-      avatar: newUser.avatar
+    if (users.length > 0) {
+      res.status(409).json({ message: "Utilisateur existe déjà" });
+      return;
     }
-  });
-}
 
-// Faux utilisateur fallback (si tu veux tester vite)
-const fakeUser = {
-  id: 999,
-  name: "remy",
-  password: "ioupi",
-  avatar: null
-};
+    const passwordHash = await hash(password, 10);
+
+    const result: any = await conn.query(
+      "INSERT INTO users(name, passwordHash) VALUES (?, ?)",
+      [name, passwordHash]
+    );
+
+    res.status(201).json({
+      message: "Compte créé",
+      user: {
+        id: result.insertId,
+        name
+      }
+    });
+  } finally {
+    conn.end();
+  }
+}
 
 export async function login(req: Request, res: Response) {
   const { name, password } = req.body;
 
-  const user =
-    users.find((u) => u.name === name) ||
-    (name === fakeUser.name && password === fakeUser.password
-      ? fakeUser
-      : null);
-
-  if (!user || user.password !== password) {
-    res.status(401).json({ message: "Identifiants invalides" });
+  if (!name || !password) {
+    res.status(400).json({ message: "Champs requis" });
     return;
   }
 
-  const payload = {
-    userId: user.id,
-    name: user.name
-  };
+  const conn = await pool.getConnection();
 
-  const accessToken = generateAccessToken(payload);
-  const refreshToken = generateRefreshToken(payload);
-
-  res.cookie("access_token", accessToken, {
-    httpOnly: true,
-    sameSite: "lax"
-  });
-
-  res.cookie("refresh_token", refreshToken, {
-    httpOnly: true,
-    sameSite: "lax"
-  });
-
-  res.json({
-    message: "Connexion réussie",
-    user: {
-      id: user.id,
-      name: user.name,
-      avatar: user.avatar || null
-    }
-  });
-}
-
-export async function refresh(req: Request, res: Response) {
   try {
-    const refreshToken = req.cookies.refresh_token;
+    const users: any[] = await conn.query(
+      "SELECT * FROM users WHERE name = ?",
+      [name]
+    );
 
-    if (!refreshToken) {
-      res.status(401).json({ message: "Refresh token manquant" });
+    if (users.length === 0) {
+      res.status(401).json({ message: "Identifiants invalides" });
       return;
     }
 
-    const payload = verifyRefreshToken(refreshToken);
+    const user = users[0];
+    const ok = await compare(password, user.passwordHash);
 
-    const newAccessToken = generateAccessToken({
-      userId: payload.userId,
-      name: payload.name
-    });
+    if (!ok) {
+      res.status(401).json({ message: "Identifiants invalides" });
+      return;
+    }
 
-    res.cookie("access_token", newAccessToken, {
+    const payload = { userId: user.id, name: user.name };
+
+    res.cookie("access_token", generateAccessToken(payload), {
       httpOnly: true,
       sameSite: "lax"
     });
 
-    res.json({
-      message: "Access token renouvelé"
+    res.cookie("refresh_token", generateRefreshToken(payload), {
+      httpOnly: true,
+      sameSite: "lax"
     });
-  } catch {
-    res.status(401).json({ message: "Refresh token invalide ou expiré" });
+
+    res.json({ message: "Connexion réussie" });
+  } finally {
+    conn.end();
   }
 }
 
-export async function logout(req: Request, res: Response) {
+export async function logout(_req: Request, res: Response) {
   res.clearCookie("access_token");
   res.clearCookie("refresh_token");
-
-  res.json({
-    message: "Déconnexion réussie"
-  });
+  res.json({ message: "Déconnexion réussie" });
 }
 
-export async function checkAuthStatus(req: Request, res: Response) {
-  const token = req.cookies.access_token;
+export async function refresh(req: Request, res: Response) {
+  try {
+    const token = req.cookies.refresh_token;
 
-  if (!token) {
-    res.json({ authenticated: false });
-    return;
+    if (!token) {
+      res.status(401).json({ message: "Refresh token manquant" });
+      return;
+    }
+
+    const payload: any = verifyRefreshToken(token);
+
+    res.cookie(
+      "access_token",
+      generateAccessToken({
+        userId: payload.userId,
+        name: payload.name
+      }),
+      {
+        httpOnly: true,
+        sameSite: "lax"
+      }
+    );
+
+    res.json({ message: "Refreshed" });
+  } catch {
+    res.status(401).json({ message: "Invalid refresh" });
   }
-
-  res.json({ authenticated: true });
 }

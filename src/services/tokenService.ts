@@ -1,40 +1,21 @@
 import jwt from "jsonwebtoken";
 
-type JwtPayload = {
-  userId: number;
-  name: string;
-};
-
-export function generateAccessToken(payload: JwtPayload): string {
-  return jwt.sign(
-    payload,
-    process.env.JWT_ACCESS_SECRET as string,
-    {
-      expiresIn: "15m"
-    }
-  );
+export function generateAccessToken(payload: any) {
+  return jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, {
+    expiresIn: "15m"
+  });
 }
 
-export function generateRefreshToken(payload: JwtPayload): string {
-  return jwt.sign(
-    payload,
-    process.env.JWT_REFRESH_SECRET as string,
-    {
-      expiresIn: "7d"
-    }
-  );
+export function generateRefreshToken(payload: any) {
+  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, {
+    expiresIn: "7d"
+  });
 }
 
-export function verifyAccessToken(token: string): JwtPayload {
-  return jwt.verify(
-    token,
-    process.env.JWT_ACCESS_SECRET as string
-  ) as JwtPayload;
+export function verifyAccessToken(token: string) {
+  return jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
 }
 
-export function verifyRefreshToken(token: string): JwtPayload {
-  return jwt.verify(
-    token,
-    process.env.JWT_REFRESH_SECRET as string
-  ) as JwtPayload;
+export function verifyRefreshToken(token: string) {
+  return jwt.verify(token, process.env.JWT_REFRESH_SECRET as string);
 }

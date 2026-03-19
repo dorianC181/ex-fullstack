@@ -6,15 +6,15 @@ export function checkAuth(req: Request, res: Response, next: NextFunction) {
     const token = req.cookies.access_token;
 
     if (!token) {
-      res.status(401).json({ message: "Token manquant" });
+      res.status(401).json({ message: "Non authentifié" });
       return;
     }
 
     const payload = verifyAccessToken(token);
-
     (req as any).user = payload;
+
     next();
-  } catch (error) {
-    res.status(401).json({ message: "Token invalide ou expiré" });
+  } catch {
+    res.status(401).json({ message: "Token invalide" });
   }
 }
