@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Express Session</title>
+</head>
+<body>
+  <h1>Page d'accueil</h1>
+
+  <h2>Connexion</h2>
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Nom d'utilisateur" required />
+    <input type="password" id="password" placeholder="Mot de passe" required />
+    <button type="submit">Se connecter</button>
+  </form>
+
+  <button id="checkAuth">Vérifier auth</button>
+  <button id="logout">Se déconnecter</button>
+
+  <p>
+    <a href="/secret">Aller à la page secrète</a>
+  </p>
+
+  <pre id="result"></pre>
+
+  <script>
+    const result = document.getElementById("result");
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await response.json();
+      result.textContent = JSON.stringify(data, null, 2);
+    });
+
+    document.getElementById("checkAuth").addEventListener("click", async () => {
+      const response = await fetch("/auth/check");
+      const data = await response.json();
+      result.textContent = JSON.stringify(data, null, 2);
+    });
+
+    document.getElementById("logout").addEventListener("click", async () => {
+      const response = await fetch("/logout", {
+        method: "POST"
+      });
+
+      const data = await response.json();
+      result.textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
