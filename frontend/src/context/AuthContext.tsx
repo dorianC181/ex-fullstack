@@ -14,7 +14,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = '/api';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -51,8 +51,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Erreur de connexion");
+      let message = "Erreur de connexion";
+      try {
+        const error = await res.json();
+        message = error.message || message;
+      } catch (e) {}
+      throw new Error(message);
     }
 
     const data = await res.json();
@@ -68,8 +72,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Erreur d'inscription");
+      let message = "Erreur d'inscription";
+      try {
+        const error = await res.json();
+        message = error.message || message;
+      } catch (e) {}
+      throw new Error(message);
     }
   };
 

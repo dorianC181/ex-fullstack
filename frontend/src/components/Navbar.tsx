@@ -30,7 +30,16 @@ const Navbar = () => {
         
         {isAuthenticated ? (
           <>
-            <span style={{ fontWeight: 600, color: '#636e72' }}>Bonjour, {user?.name}</span>
+            <Link to="/add" style={{ 
+              textDecoration: 'none', 
+              color: 'white', 
+              backgroundColor: '#00b894', 
+              padding: '0.5rem 1rem', 
+              borderRadius: '8px',
+              fontWeight: 700
+            }}>+ Ajouter une recette</Link>
+            
+            <span style={{ fontWeight: 600, color: '#636e72' }}>{user?.name}</span>
             <button 
               onClick={logout}
               style={{
