@@ -1,3 +1,4 @@
+// Importation des outils de formulaire et de navigation
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -6,6 +7,7 @@ const AddRecipePage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
+  // Initialisation du formulaire avec react-hook-form et les valeurs par défaut
   const { register, control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       name: '',
@@ -19,11 +21,13 @@ const AddRecipePage = () => {
     }
   });
 
+  // Gestion dynamique de la liste des ingrédients
   const { fields, append, remove } = useFieldArray({
     control,
     name: "ingredients"
   });
 
+  // Fonction de soumission du formulaire vers l'API
   const onSubmit = async (data: any) => {
     try {
       const formattedData = {

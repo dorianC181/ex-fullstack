@@ -1,3 +1,4 @@
+// Importation des outils de routage et des composants de pages
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
@@ -10,6 +11,7 @@ import { AuthProvider } from './context/AuthContext';
 import './index.css';
 
 function App() {
+  // Rendu principal de l'application avec le fournisseur d'authentification et le routeur
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -17,6 +19,7 @@ function App() {
           <Navbar />
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <Routes>
+              {/* Définition des chemins (URL) et des composants correspondants */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />

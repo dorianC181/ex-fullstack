@@ -1,8 +1,10 @@
+// Importation des outils React, de navigation et de gestion de formulaires
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 const EditRecipePage = () => {
+  // Récupération de l'ID depuis l'URL et initialisation du formulaire
   const { id } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
@@ -21,12 +23,13 @@ const EditRecipePage = () => {
     }
   });
 
+  // Gestion de la liste dynamique des ingrédients
   const { fields, append, remove } = useFieldArray({
     control,
     name: "ingredients"
   });
 
-  // Charger la recette existante
+  // Effet pour charger les données actuelles de la recette à modifier
   useEffect(() => {
     const fetchRecipe = async () => {
       try {

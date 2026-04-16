@@ -1,14 +1,17 @@
+// Importation des outils de formulaire, de session et de navigation
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const RegisterPage = () => {
+  // Initialisation des hooks de gestion de formulaire et d'authentification
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
+  // Fonction de gestion de la soumission de l'inscription
   const onSubmit = async (data: any) => {
     try {
       setError(null);

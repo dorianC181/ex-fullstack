@@ -1,10 +1,13 @@
+// Importation des outils React nécessaires
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+// Définition de la structure d'un utilisateur
 interface User {
   id: number;
   name: string;
 }
 
+// Définition des données et fonctions partagées par le contexte d'authentification
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
@@ -14,14 +17,16 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
+// Création du contexte d'authentification
 const API_BASE_URL = '/api';
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Composant fournisseur qui entoure l'application pour gérer la session
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Effet pour vérifier si l'utilisateur est déjà connecté au chargement du site
   useEffect(() => {
     const checkSession = async () => {
       try {
@@ -42,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkSession();
   }, []);
 
+  // Fonction permettant de se connecter au serveur
   const login = async (name: string, password: string) => {
     const res = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
@@ -96,6 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
+// Hook personnalisé pour utiliser facilement les données de session partout
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

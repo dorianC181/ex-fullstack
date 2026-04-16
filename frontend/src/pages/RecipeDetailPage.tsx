@@ -1,12 +1,15 @@
+// Importation des outils React, de navigation et du modèle de données
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Recipe } from '../types/recipe';
 
 const RecipeDetailPage = () => {
+  // Récupération de l'ID de la recette et gestion des états de données
   const { id } = useParams();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Effet pour charger les détails complets de la recette au montage du composant
   useEffect(() => {
     const fetchRecipe = async () => {
       try {

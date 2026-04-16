@@ -1,14 +1,17 @@
+// Importation des outils de formulaire, de session et de navigation
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 
 const LoginPage = () => {
+  // Initialisation des hooks et des états locaux
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
+  // Gestion de la soumission du formulaire de connexion
   const onSubmit = async (data: any) => {
     try {
       setError(null);

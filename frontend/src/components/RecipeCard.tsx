@@ -1,7 +1,9 @@
+// Importation des types et hooks nécessaires
 import { Recipe, Difficulty } from '../types/recipe';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+// Interface pour définir les propriétés (props) reçues par le composant
 interface RecipeCardProps {
   recipe: Recipe;
   onRefresh?: () => void;
@@ -10,6 +12,7 @@ interface RecipeCardProps {
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onRefresh }) => {
   const { isAuthenticated, user } = useAuth();
   
+  // Fonction logique pour calculer la difficulté selon les critères du TP
   const calculateDifficulty = (r: Recipe): Difficulty => {
     if (r.ovenRequired && r.specialEquipmentRequired && r.exoticIngredients) return "Difficile";
     if (r.ovenRequired || r.specialEquipmentRequired || r.exoticIngredients) return "Difficulté moyenne";
@@ -18,6 +21,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onRefresh }) => {
 
   const difficulty = calculateDifficulty(recipe);
 
+  // Fonction pour obtenir le style visuel du badge selon la difficulté
   const getBadgeStyle = (diff: Difficulty) => {
     switch (diff) {
       case "Difficile": return { backgroundColor: '#d63031', color: 'white' };
@@ -26,6 +30,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onRefresh }) => {
     }
   };
 
+  // Action pour supprimer une recette après confirmation
   const handleDelete = async () => {
     if (!window.confirm("Supprimer cette recette ?")) return;
     try {
@@ -62,7 +67,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onRefresh }) => {
       borderRadius: '12px',
       padding: '1.5rem',
       backgroundColor: 'white',
-      shadowColor: '0 4px 6px rgba(0,0,0,0.1)',
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
       display: 'flex',
       flexDirection: 'column',
       gap: '1rem',

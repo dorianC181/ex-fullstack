@@ -1,12 +1,15 @@
+// Importation des outils React et des composants nécessaires
 import React, { useState, useEffect, useCallback } from 'react';
 import RecipeCard from '../components/RecipeCard';
 import { Recipe } from '../types/recipe';
 
 const HomePage: React.FC = () => {
+  // États locaux pour gérer les recettes, la recherche et le chargement
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  // Fonction mémorisée pour récupérer les recettes depuis l'API
   const fetchRecipes = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -26,6 +29,7 @@ const HomePage: React.FC = () => {
     }
   }, [searchTerm]);
 
+  // Effet pour déclencher la recherche avec un léger délai (debounce)
   useEffect(() => {
     // Petit debounce pour la recherche
     const timer = setTimeout(() => {

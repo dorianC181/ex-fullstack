@@ -1,7 +1,9 @@
+// Importation du lien de navigation et du hook de session
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
+  // Récupération des informations de connexion depuis le contexte global
   const { isAuthenticated, user, logout } = useAuth();
 
   return (
@@ -28,6 +30,7 @@ const Navbar = () => {
       <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
         <Link to="/" style={{ textDecoration: 'none', color: '#2d3436', fontWeight: 600 }}>Accueil</Link>
         
+        {/* Affichage conditionnel selon si l'utilisateur est connecté ou non */}
         {isAuthenticated ? (
           <>
             <Link to="/add" style={{ 
