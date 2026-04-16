@@ -41,7 +41,7 @@ const AddRecipePage = () => {
       });
 
       if (res.ok) {
-        alert("Recette publiée avec succès ! 🎉");
+        alert("Recette publiée avec succès !");
         navigate('/');
       } else {
         const errData = await res.json();
@@ -54,7 +54,7 @@ const AddRecipePage = () => {
 
   return (
     <div style={{ maxWidth: '600px', margin: '2rem auto', padding: '2rem', background: 'white', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-      <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Ajouter une Recette 👨‍🍳</h2>
+      <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Ajouter une recette</h2>
       
       {error && <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
 

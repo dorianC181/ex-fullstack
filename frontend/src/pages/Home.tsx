@@ -36,8 +36,9 @@ const HomePage: React.FC = () => {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <header style={{ marginBottom: '3rem', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2.5rem', color: '#2d3436', marginBottom: '1rem' }}>Découvrez nos Recettes 🍲</h1>
+      <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <h1 style={{ fontSize: '2.5rem', color: '#2d3436', marginBottom: '1rem' }}>Découvrez nos Recettes</h1>
+        <p style={{ color: '#636e72' }}>Trouvez l'inspiration pour vos prochains repas</p>
         
         <div style={{ maxWidth: '600px', margin: '0 auto', position: 'relative' }}>
           <input 

@@ -22,7 +22,7 @@ const Navbar = () => {
         textDecoration: 'none', 
         color: '#2d3436' 
       }}>
-        Cordon<span style={{ color: '#0984e3' }}>Bleu</span> 👨‍🍳
+        Cordon<span style={{ color: '#0984e3' }}>Bleu</span>
       </Link>
 
       <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>

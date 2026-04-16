@@ -32,7 +32,7 @@ const LoginPage = () => {
         flexDirection: 'column',
         gap: '1.5rem'
       }}>
-        <h2 style={{ textAlign: 'center', margin: 0 }}>Connexion 👨‍🍳</h2>
+        <h2 style={{ textAlign: 'center', margin: 0 }}>Connexion</h2>
         
         {error && <div style={{ color: 'red', fontSize: '0.9rem', textAlign: 'center' }}>{error}</div>}
 

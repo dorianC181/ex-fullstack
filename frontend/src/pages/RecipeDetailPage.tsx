@@ -34,9 +34,9 @@ const RecipeDetailPage = () => {
       <div style={{ marginTop: '2rem' }}>
         <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>{recipe.name}</h1>
         <div style={{ display: 'flex', gap: '1rem', color: '#636e72', marginBottom: '2rem' }}>
-          <span>📍 Pays : {recipe.countryOfOrigin}</span>
-          <span>👥 Pour : {recipe.servings} personnes</span>
-          <span>👀 Vues : {recipe.viewsCount}</span>
+          <span>Pays : {recipe.countryOfOrigin}</span>
+          <span>Pour : {recipe.servings} personnes</span>
+          <span>Vues : {recipe.viewsCount}</span>
         </div>
 
         <section style={{ marginBottom: '2rem' }}>
@@ -50,9 +50,9 @@ const RecipeDetailPage = () => {
 
         <section style={{ marginBottom: '2rem' }}>
           <h3>Détails techniques</h3>
-          <p>🔥 Four requis : {recipe.ovenRequired ? "Oui" : "Non"}</p>
-          <p>🛠️ Matériel spécifique : {recipe.specialEquipmentRequired ? "Oui" : "Non"}</p>
-          <p>🌶️ Ingrédients exotiques : {recipe.exoticIngredients ? "Oui" : "Non"}</p>
+          <p>Four requis : {recipe.ovenRequired ? "Oui" : "Non"}</p>
+          <p>Matériel spécifique : {recipe.specialEquipmentRequired ? "Oui" : "Non"}</p>
+          <p>Ingrédients exotiques : {recipe.exoticIngredients ? "Oui" : "Non"}</p>
         </section>
 
         <div style={{ padding: '1rem', background: '#f5f6fa', borderRadius: '8px', fontSize: '0.9rem' }}>

@@ -65,7 +65,7 @@ const EditRecipePage = () => {
       });
 
       if (res.ok) {
-        alert("Recette mise à jour ! 📝");
+        alert("Recette mise à jour !");
         navigate('/');
       } else {
         const errData = await res.json();
@@ -80,7 +80,7 @@ const EditRecipePage = () => {
 
   return (
     <div style={{ maxWidth: '600px', margin: '2rem auto', padding: '2rem', background: 'white', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-      <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Modifier la Recette ✏️</h2>
+      <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Modifier la recette</h2>
       
       {error && <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
 
