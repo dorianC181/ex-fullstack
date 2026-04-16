@@ -79,11 +79,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onRefresh }) => {
         }}>{difficulty}</span>
       </div>
 
-      <p style={{ color: '#636e72', fontSize: '0.85rem', margin: 0 }}>🌍 {recipe.countryOfOrigin}</p>
+      <p style={{ color: '#636e72', fontSize: '0.85rem', margin: 0 }}>Pays : {recipe.countryOfOrigin}</p>
 
       <div style={{ display: 'flex', gap: '0.8rem', fontSize: '0.8rem' }}>
-        <span>👥 {recipe.servings} pers.</span>
-        <span>💰 {Array(recipe.priceLevel).fill('€').join('')}</span>
+        <span>{recipe.servings} pers.</span>
+        <span>Prix : {Array(recipe.priceLevel).fill('€').join('')}</span>
       </div>
 
       <div style={{ borderTop: '1px solid #eee', paddingTop: '0.8rem' }}>
@@ -106,17 +106,15 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onRefresh }) => {
           fontWeight: 600
         }}>Détails</Link>
 
-        {isAuthenticated && (
           <>
-            <button onClick={handleDuplicate} title="Dupliquer" style={{ padding: '8px', backgroundColor: '#55efc4', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>👯</button>
+            <button onClick={handleDuplicate} title="Dupliquer" style={{ padding: '8px', backgroundColor: '#55efc4', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}>DUP</button>
             {isOwner && (
               <>
-                <Link to={`/edit/${recipe.id}`} title="Modifier" style={{ padding: '8px', backgroundColor: '#ffeaa7', borderRadius: '6px', textDecoration: 'none', textAlign: 'center' }}>✏️</Link>
-                <button onClick={handleDelete} title="Supprimer" style={{ padding: '8px', backgroundColor: '#ff7675', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>🗑️</button>
+                <Link to={`/edit/${recipe.id}`} title="Modifier" style={{ padding: '8px', backgroundColor: '#ffeaa7', borderRadius: '6px', textDecoration: 'none', textAlign: 'center', fontSize: '0.8rem', color: 'black' }}>EDIT</Link>
+                <button onClick={handleDelete} title="Supprimer" style={{ padding: '8px', backgroundColor: '#ff7675', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}>DEL</button>
               </>
             )}
           </>
-        )}
       </div>
     </div>
   );

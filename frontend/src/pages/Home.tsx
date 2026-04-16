@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
               boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
             }}
           />
-          <span style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)' }}>🔍</span>
+          <span style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', color: '#636e72', fontWeight: 800 }}>GO</span>
         </div>
       </header>
 
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
         </div>
       ) : (
         <div style={{ textAlign: 'center', padding: '4rem', color: '#636e72' }}>
-          <p style={{ fontSize: '1.2rem' }}>Aucune recette trouvée 😕</p>
+          <p style={{ fontSize: '1.2rem' }}>Aucune recette trouvée</p>
           {searchTerm && <button onClick={() => setSearchTerm('')} style={{ color: '#0984e3', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 800 }}>Voir tout</button>}
         </div>
       )}
