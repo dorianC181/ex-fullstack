@@ -1,5 +1,5 @@
-import React from 'react';
 import { Recipe, Difficulty } from '../types/recipe';
+import { Link } from 'react-router-dom';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -8,21 +8,17 @@ interface RecipeCardProps {
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   // --- LOGIQUE MÉTIER DU TP ---
   const calculateDifficulty = (r: Recipe): Difficulty => {
-    // Si la recette nécessite un four, des équipements spécifiques et des ingrédients exotiques => Difficile
     if (r.ovenRequired && r.specialEquipmentRequired && r.exoticIngredients) {
       return "Difficile";
     }
-    // Si la recette nécessite un four, OU des équipements spécifiques OU des ingrédients exotiques => Difficulté moyenne
     if (r.ovenRequired || r.specialEquipmentRequired || r.exoticIngredients) {
       return "Difficulté moyenne";
     }
-    // Sinon => Facile
     return "Facile";
   };
 
   const difficulty = calculateDifficulty(recipe);
 
-  // Style dynamique selon la difficulté
   const getBadgeStyle = (diff: Difficulty) => {
     switch (diff) {
       case "Difficile": return { backgroundColor: '#d63031', color: 'white' };
@@ -73,7 +69,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         </ul>
       </div>
 
-      <button style={{
+      <Link to={`/recipe/${recipe.id}`} style={{
         marginTop: 'auto',
         padding: '10px',
         backgroundColor: '#0984e3',
@@ -81,10 +77,12 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         border: 'none',
         borderRadius: '8px',
         cursor: 'pointer',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textDecoration: 'none',
+        textAlign: 'center'
       }}>
         Voir les détails
-      </button>
+      </Link>
     </div>
   );
 };
